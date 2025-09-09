@@ -20,9 +20,14 @@ jobs:
       # 3. Stop container cũ (nếu có)
       - name: Stop old container
         run: |
-          docker stop myapi 2>$null || echo "container not running"
-          docker rm myapi 2>$null || echo "container not exist"
-        shell: pwsh
+          $container = docker ps -q -f name=myapi
+          if ($container) {
+            docker stop $container
+            docker rm $container
+          } else {
+            Write-Output "No existing container found"
+          }
+        shell: powershell
 
       # 4. Run container mới
       - name: Run new container

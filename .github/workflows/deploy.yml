@@ -15,7 +15,7 @@ jobs:
 
       # 2. Build Docker image (Dockerfile trong MyApi/)
       - name: Build Docker image
-        run: docker build -t myapi:latest ./MyApi
+        run: docker build -t myapi:latest ./DEMO_CICD_GITHUB
 
       # 3. Stop container cũ (nếu có)
       - name: Stop old container

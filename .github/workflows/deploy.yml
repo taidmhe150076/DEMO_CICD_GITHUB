@@ -1,0 +1,26 @@
+name: CI/CD - Docker Deploy
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build-deploy:
+    runs-on: self-hosted   # chạy trên server Windows của bạn
+
+    steps:
+      # 1. Lấy code
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      # 2. Build Docker image (Dockerfile trong MyApi/)
+      - name: Build Docker image
+        run: docker build -t myapi:latest ./MyApi
+
+      # 3. Stop container cũ (nếu có)
+      - name: Stop old container
+        run: docker stop myapi || true && docker rm myapi || true
+
+      # 4. Run container mới
+      - name: Run new container
+        run: docker run -d -p 8080:80 --restart always --name myapi myapi:latest
